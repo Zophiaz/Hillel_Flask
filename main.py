@@ -18,6 +18,8 @@ def login_user_1():
             result = session.execute(query).fetchall()
             if result:
                 flSession['username'] = request.form['username']
+            else:
+                return render_template('index.html', username='Invalid username or password')
             return render_template('index.html', username=flSession['username'])
     else:
         return render_template('login_form.html')
@@ -37,7 +39,7 @@ def login_user_2():
 @app.route("/logout", methods=['GET'])
 def logout():
     flSession.pop('username', None)
-    return ""
+    return "Logout is completed"
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -98,10 +100,11 @@ def currency_converter():
                                cur_exchange_buy=cur_exchange_buy,
                                cur_exchange_sale=cur_exchange_sale,
                                user_currency_1=user_currency_1,
-                               user_currency_2=user_currency_2
+                               user_currency_2=user_currency_2,
+                               username=flSession['username'],
                                )
     else:
-        return render_template('form.html')
+        return render_template('form.html', username=flSession['username'])
 
 
 if __name__ == '__main__':
